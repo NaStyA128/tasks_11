@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Products</title>
+</head>
+<body>
+    {% for prod in products %}
+        <p>id: {{ prod.id }}</p>
+        <p>name: {{ prod.name }}</p>
+        <p>size: {{ prod.size }}</p>
+        <p>colour: {{ prod.colour }}</p>
+        <p>price: {{ prod.price }}</p><br />
+    {% endfor %}
+
+    <form method="POST" action="/">
+        {% csrf_token %}
+        {{ form.as_p }}
+    </form>
+</body>
+</html>
