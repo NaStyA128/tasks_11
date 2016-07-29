@@ -2,11 +2,13 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 from .views import (
-    products,
-    products_id,
+    CategoriesList,
+    ProductsList,
+    ProductDetail,
 )
 
 urlpatterns = [
-    url(r'^$', products),
-    url(r'^(?P<id>\d+)/$', products_id),
+    url(r'^$', CategoriesList.as_view()),
+    url(r'^(\d+)/$', ProductsList.as_view()),
+    url(r'^(\d+)/(?P<pk>\d+)/$', ProductDetail.as_view()),
 ]

@@ -1,50 +1,36 @@
-from django.shortcuts import render, HttpResponse
-from django.http import Http404
-from django.shortcuts import get_object_or_404
+from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
+from django.shortcuts import get_object_or_404, get_list_or_404
 
-# Create your views here.
-from .models import (
+from .models import(
     Categories,
     Products,
 )
-from .forms import CategoryForm
-
-"""
-# @require_http_method(['GET', 'POST'])
-# @require_GET()
-def index(request):
-    # можно упростить, использ. декоратор
-    # if request.method == 'POST':
-    try:
-        id = Categories.objects.get(id=id)
-    except:
-        raise Http404
-    return render(request, 'index.html', {'id': id})
-"""
 
 
-def products(request):
-    if request.method == 'GET':
-        form = CategoryForm()
-    elif request.method == 'POST':
-        form = CategoryForm(request.POST)
-    # if form.is_valid():
-    #     form.save()
-    prod = Products.objects.all()
-    context = {
-        'products': prod,
-        'form': form,
-    }
-    return render(request, 'products.html', context)
+class CategoriesList(ListView):
+    model = Categories
+    context_object_name = 'categories'
+    template_name = 'index.html'
 
 
-def products_id(request, id):
-    # try:
-    # get_list_or_404
-    prod = get_object_or_404(Products, id=id)
-    context = {
-        'product': prod,
-    }
-    # except:
-    #     raise Http404
-    return render(request, 'product.html', context)
+class ProductsList(ListView):
+    model = Products
+    context_object_name = 'products'
+    template_name = 'products.html'
+    paginate_by = 5
+
+    def get_queryset(self):
+        # self.category = get_object_or_404(Categories, id=self.args[0])
+        return Products.objects.filter(category_id=self.args[0])
+
+    # def get_context_data(self, **kwargs):
+    #     context = super(ProductsList, self).get_context_data(**kwargs)
+    #     context['category'] = self.category
+    #     return context
+
+
+class ProductDetail(DetailView):
+    model = Products
+    context_object_name = 'product'
+    template_name = 'product.html'

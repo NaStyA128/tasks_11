@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shop</title>
+
+    <link href="{% static 'shop/css/style.css' %}" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <header>
+        <nav>
+            {% for category in categories %}
+            <li><a href="/{{ category.id }}/">{{ category.name }}</a></li>
+            {% endfor %}
+        </nav>
+    </header>
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
