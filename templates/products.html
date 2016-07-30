@@ -1,12 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+    <!--<div class="search">
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Search...">
+        </form>
+    </div>-->
+    <a href="/add_product">Add product...</a>
+
+    <ul class="products-list">
     {% for prod in products %}
-        <a href="{{ prod.id }}/">name: {{ prod.name }}</a>
-        <p>size: {{ prod.size }}</p>
-        <p>colour: {{ prod.colour }}</p>
-        <p>price: {{ prod.price }}</p><br />
+        <li>
+            <div class="image-wrapper"><img src="{{ prod.image }}" alt="" /></div>
+            <a href="{{ prod.id }}/">{{ prod.name }}</a>
+            <p>price: {{ prod.price }}</p>
+        </li>
     {% endfor %}
+    </ul>
 
     {% if is_paginated %}
         <div class="pagination">
@@ -24,8 +37,4 @@
         </div>
     {% endif %}
 
-    <form method="POST" action="/">
-        {% csrf_token %}
-        {{ form.as_p }}
-    </form>
 {% endblock %}

@@ -1,5 +1,11 @@
 from django import forms
 
+from .models import Products
 
-class CategoryForm(forms.Form):
-    name = forms.CharField(max_length=50)
+
+class SearchProduct(forms.ModelForm):
+    class Meta:
+        model = Products
+        fields = [
+            'name',
+        ]

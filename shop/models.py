@@ -22,11 +22,15 @@ class Products(models.Model):
         Categories,
         on_delete=models.CASCADE,
     )
+    image = models.FilePathField(path='/home/user/Projects/django_project/'
+                                      'static/shop/images',
+                                 max_length=255)
     size = models.CharField(max_length=10)
     colour = models.CharField(max_length=40)
     price = models.FloatField()
     quantity = models.PositiveIntegerField()
 
+    @python_2_unicode_compatible
     def __str__(self):
         return '%s, %s, %s' % \
                (self.name, self.size, self.colour)
