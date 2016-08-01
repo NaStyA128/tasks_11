@@ -11,15 +11,31 @@
     </div>-->
     <a href="/add_product">Add product...</a>
 
-    <ul class="products-list">
-    {% for prod in products %}
-        <li>
-            <div class="image-wrapper"><img src="{{ prod.image }}" alt="" /></div>
-            <a href="{{ prod.id }}/">{{ prod.name }}</a>
-            <p>price: {{ prod.price }}</p>
-        </li>
-    {% endfor %}
-    </ul>
+    <table class="products-list">
+        <thead>
+            <tr>
+                <td>Name product</td>
+                <td>Price</td>
+                <td>Photo</td>
+                <td>Options</td>
+            </tr>
+        </thead>
+        <tbody>
+        {% for prod in products %}
+            <tr>
+                <td><a href="{{ prod.id }}/">{{ prod.name }}</a></td>
+                <td><p>price: {{ prod.price }}</p></td>
+                <td>
+                    <div class="image-wrapper"><img src="{{ prod.image.url }}" alt="" /></div>
+                </td>
+                <td>
+                    <a href="/edit_product/{{ prod.id }}/">Edit</a><br>
+                    <a href="/delete_product/{{ prod.id }}/">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
     {% if is_paginated %}
         <div class="pagination">

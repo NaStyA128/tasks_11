@@ -2,4 +2,44 @@
 
 {% block content %}
 
+    <form class="search-product">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Search">
+    </form>
+
+    <!--<form class="search-product" method="POST" action="">
+        <select name="order_by_select">
+            <option>name</option>
+        </select>
+        <input type="submit" value="Sorting">
+    </form>-->
+
+    <ul class="ul-products">
+    {% for prod in products %}
+        <li>
+            <div class="image-wrapper"><img src="{{ prod.image.url }}" alt="" /></div>
+            <a href="{{ prod.category_id }}/{{ prod.id }}/">{{ prod.name }}</a>
+            <p>price: {{ prod.price }}</p>
+            <a href=""></a>
+        </li>
+    {% endfor %}
+    </ul>
+
+    {% if is_paginated %}
+        <div class="pagination">
+            <span class="page-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+                {% endif %}
+                <span class="page-current">
+                    {{ page_obj.number }}
+                </span>
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+                {% endif %}
+            </span>
+        </div>
+    {% endif %}
+
 {% endblock %}

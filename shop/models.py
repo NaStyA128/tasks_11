@@ -1,10 +1,10 @@
 from django.db import models
-# from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model
 from django.conf import settings
 from django.utils.encoding import python_2_unicode_compatible
 
 # Create your models here.
-# User = get_user_model()
+# Users = get_user_model()
 
 
 class Categories(models.Model):
@@ -22,9 +22,14 @@ class Products(models.Model):
         Categories,
         on_delete=models.CASCADE,
     )
-    image = models.FilePathField(path='/home/user/Projects/django_project/'
-                                      'static/shop/images',
-                                 max_length=255)
+    # image = models.FilePathField(path='/home/user/Projects/django_project/'
+    #                                   'static/shop/images',
+    #                              max_length=255)
+    image = models.ImageField(
+        upload_to='photos/',
+        max_length=255,
+        # blank=True,
+    )
     size = models.CharField(max_length=10)
     colour = models.CharField(max_length=40)
     price = models.FloatField()

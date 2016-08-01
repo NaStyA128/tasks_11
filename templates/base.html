@@ -15,6 +15,12 @@
             <li><a href="/{{ category.id }}/">{{ category.name }}</a></li>
             {% endfor %}
         </nav>
+        {% if session %}
+            <a href="">Profile</a>
+        {% else %}
+            <a href="accounts/login/">Authorization</a>
+            <a href="accounts/">Registration</a>
+        {% endif %}
     </header>
     <div id="content">
         {% block content %}{% endblock %}

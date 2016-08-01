@@ -1,9 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <p>id: {{ product.id }}</p>
-    <p>name: {{ product.name }}</p>
-    <p>size: {{ product.size }}</p>
-    <p>colour: {{ product.colour }}</p>
-    <p>price: {{ product.price }}</p><br />
+    <div class="prod-detail-img">
+        <img src="{{ product.image.url }}">
+    </div>
+    <div class="prod-detail-info">
+        <p>Name: {{ product.name }}</p>
+        <p>Description: {{ product.description }}</p>
+        <p>Size: {{ product.size }}</p>
+        <p>Colour: {{ product.colour }}</p>
+        <p>Price: {{ product.price }}</p>
+    </div>
+
 {% endblock %}
