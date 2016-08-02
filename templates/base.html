@@ -15,11 +15,12 @@
             <li><a href="/{{ category.id }}/">{{ category.name }}</a></li>
             {% endfor %}
         </nav>
-        {% if session %}
-            <a href="">Profile</a>
+        {% if user.is_authenticated  %}
+            <a href="/accounts/profile/">Profile</a>
+            <a href="/accounts/logout/">Logout</a>
         {% else %}
-            <a href="accounts/login/">Authorization</a>
-            <a href="accounts/">Registration</a>
+            <a href="/accounts/login/">Authorization</a>
+            <a href="/accounts/">Registration</a>
         {% endif %}
     </header>
     <div id="content">

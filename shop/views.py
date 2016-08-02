@@ -8,6 +8,7 @@ from django.views.generic.edit import (
 )
 from django.views.generic.base import View
 from django.contrib.auth.models import User
+from django.contrib.auth import login, logout
 from django.contrib.auth.forms import (
     UserCreationForm,
     AuthenticationForm,
@@ -70,20 +71,28 @@ class ProductDetail(DetailView):
         return context
 
 
-class AddProduct(CreateView):
+class AddProduct(CreateView, UpdateView):
     model = Products
     fields = ['name', 'description', 'category', 'image', 'size',
               'colour', 'price', 'quantity']
     template_name = 'add_product.html'
     success_url = '/'
 
+    def get(self, request, *args, **kwargs):
+        # ?rediret_uri=sdfsdfs
+        # self.success_url = '/%s/' % request.GET.get('redirect_uri')
+        # print(self.success_url)
+        self.object = None
+        response = super(AddProduct, self).get(request, *args, **kwargs)
+        return response
 
-class UpdateProduct(UpdateView):
-    model = Products
-    fields = ['name', 'description', 'category', 'image', 'size',
-              'colour', 'price', 'quantity']
-    template_name = 'add_product.html'
-    success_url = '/'
+
+# class UpdateProduct(UpdateView):
+#     model = Products
+#     fields = ['name', 'description', 'category', 'image', 'size',
+#               'colour', 'price', 'quantity']
+#     template_name = 'add_product.html'
+#     success_url = '/'
 
 
 class DeleteProduct(DeleteView):
@@ -94,16 +103,15 @@ class DeleteProduct(DeleteView):
         return self.post(request, *args, **kwargs)
 
 
-# class UserProfile(DetailView):
-#     model = User
-#     context_object_name = 'user'
-#     template_name = 'profile.html'
-#
-#     def get_context_data(self, **kwargs):
-#         print(kwargs)
-#         context = super(UserProfile, self).get_context_data(**kwargs)
-#         context['categories'] = Categories.objects.all()
-#         return context
+class UserProfile(DetailView):
+    model = User
+    context_object_name = 'user'
+    template_name = 'profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(UserProfile, self).get_context_data(**kwargs)
+        context['categories'] = Categories.objects.all()
+        return context
 
 
 class RegistrationUser(FormView):
@@ -121,27 +129,23 @@ class RegistrationUser(FormView):
         return context
 
 
-# def login(request, user):
-#     user = User.objects.get(username=request.POST['username'])
-#     print(user.password)
-#     if user.password == request.POST['password']:
-#         request.session['member_id'] = user.id
-#     else:
-#         return HttpResponse('Error!')
-
-
 class LoginUser(FormView):
     form_class = AuthenticationForm
     template_name = 'login.html'
     success_url = '/'
 
     def form_valid(self, form):
-        # self.user = form.get_user()
-        # login(self.request, self.user)
+        self.user = form.get_user()
+        login(self.request, self.user)
         return super(LoginUser, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(LoginUser, self).get_context_data(**kwargs)
+        context['categories'] = Categories.objects.all()
+        return context
 
 
 class LogoutView(View):
     def get(self, request):
-        # logout(request)
+        logout(request)
         return HttpResponseRedirect('/')

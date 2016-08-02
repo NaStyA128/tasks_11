@@ -17,20 +17,20 @@ from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.conf import settings
-from django.contrib.auth import views as auth_views
 from shop.views import (
-    # UserProfile,
+    UserProfile,
     RegistrationUser,
     LoginUser,
+    LogoutView,
 )
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^accounts/login/', LoginUser.as_view()),
+    url(r'^accounts/logout/', LogoutView.as_view()),
+    url(r'^accounts/profile/', UserProfile.as_view()),
     url(r'^accounts/', RegistrationUser.as_view()),
-    # url(r'^accounts/login/', LoginUser.as_view()),
-    # url(r'^accounts/logout/', auth_views.logout),
-    # url(r'^accounts/profile/', UserProfile.as_view()),
     url(r'^', include("shop.urls")),
 ]
 
