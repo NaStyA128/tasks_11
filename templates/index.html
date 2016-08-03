@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-    <form class="search-product">
+    <div class="container">
+    <form class="navbar-form navbar-left search-product" role="search">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="Search">
-    </form>
+      <button type="submit" class="btn btn-default">Search</button>
+    </form><br>
+    </div>
 
     <!--<form class="search-product" method="POST" action="">
         <select name="order_by_select">
@@ -14,31 +15,29 @@
         </select>
         <input type="submit" value="Sorting">
     </form>-->
+        <div class="row">
+            {% for prod in products %}
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <div class="img-wrapper"><img src="{{ prod.image.url }}" alt=""></div>
+                    <div class="caption">
+                        <a href="{{ prod.category_id }}/{{ prod.id }}/">{{ prod.name }}</a>
+                        <p>price: {{ prod.price }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
 
-    <ul class="ul-products">
-    {% for prod in products %}
-        <li>
-            <div class="image-wrapper"><img src="{{ prod.image.url }}" alt="" /></div>
-            <a href="{{ prod.category_id }}/{{ prod.id }}/">{{ prod.name }}</a>
-            <p>price: {{ prod.price }}</p>
-            <a href=""></a>
-        </li>
-    {% endfor %}
-    </ul>
 
     {% if is_paginated %}
-        <div class="pagination">
-            <span class="page-links">
-                {% if page_obj.has_previous %}
-                    <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
-                {% endif %}
-                <span class="page-current">
-                    {{ page_obj.number }}
-                </span>
-                {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
-                {% endif %}
-            </span>
+        <div class="pager">
+            {% if page_obj.has_previous %}
+                <li><a href="?page={{ page_obj.previous_page_number }}&name={% if search_name %}{{ search_name }}{% endif %}&ordering={% if search_ordering %}{{ search_ordering }}{% endif %}">Prev</a></li>
+            {% endif %}
+            {% if page_obj.has_next %}
+                <li><a href="?page={{ page_obj.next_page_number }}&name={% if search_name %}{{ search_name }}{% endif %}&ordering={% if search_ordering %}{{ search_ordering }}{% endif %}">Next</a></li>
+            {% endif %}
         </div>
     {% endif %}
 

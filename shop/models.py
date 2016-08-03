@@ -22,13 +22,9 @@ class Products(models.Model):
         Categories,
         on_delete=models.CASCADE,
     )
-    # image = models.FilePathField(path='/home/user/Projects/django_project/'
-    #                                   'static/shop/images',
-    #                              max_length=255)
     image = models.ImageField(
         upload_to='photos/',
         max_length=255,
-        # blank=True,
     )
     size = models.CharField(max_length=10)
     colour = models.CharField(max_length=40)
@@ -52,8 +48,8 @@ class Orders(models.Model):
 
 
 class OrderProducts(models.Model):
-    order = models.ForeignKey(Orders)
-    product = models.ForeignKey(Products)
+    order = models.ForeignKey(Orders, on_delete=models.CASCADE)
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     sum = models.FloatField()
 

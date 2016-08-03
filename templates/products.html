@@ -9,15 +9,16 @@
             <input type="submit" value="Search...">
         </form>
     </div>-->
-    <a href="/add_product">Add product...</a>
+<a href="/add_product/" class="btn btn-default">Add product...</a>
 
-    <table class="products-list">
+    <div class="container">
+    <table class="products-list table table-striped">
         <thead>
             <tr>
-                <td>Name product</td>
-                <td>Price</td>
-                <td>Photo</td>
-                <td>Options</td>
+                <th>Name product</th>
+                <th>Price</th>
+                <th>Photo</th>
+                <th>Options</th>
             </tr>
         </thead>
         <tbody>
@@ -38,18 +39,13 @@
     </table>
 
     {% if is_paginated %}
-        <div class="pagination">
-            <span class="page-links">
-                {% if page_obj.has_previous %}
-                    <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
-                {% endif %}
-                <span class="page-current">
-                    {{ page_obj.number }}
-                </span>
-                {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
-                {% endif %}
-            </span>
+        <div class="pager">
+            {% if page_obj.has_previous %}
+                <li><a href="?page={{ page_obj.previous_page_number }}">Prev</a></li>
+            {% endif %}
+            {% if page_obj.has_next %}
+                <li><a href="?page={{ page_obj.next_page_number }}">Next</a></li>
+            {% endif %}
         </div>
     {% endif %}
 

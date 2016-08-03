@@ -1,4 +1,4 @@
-html, body, section, div{
+/*html, body, section, div{
     display: block;
     margin: 0;
     padding: 0;
@@ -47,13 +47,11 @@ header nav li{
 
 .products-list{
     width: 100%;
-    border-collapse: separate;
 }
 .products-list thead{
     text-align: center;
 }
 .products-list td{
-    border: 1px solid black;
     padding: 5px;
 }
 .products-list td .image-wrapper{
@@ -65,13 +63,44 @@ header nav li{
 .products-list td .image-wrapper img{
     max-width: 100%;
     max-height: 100%;
+}*/
+
+header{
+    margin-top: 10px;
+}
+.search-product p{
+    display: block;
+    float: left;
+    margin: 2px 20px 10px 0;
+}
+
+.thumbnail{
+    text-align: center;
+}
+.img-wrapper{
+    width: 300px;
+    height: 200px;
+    margin: 0 auto;
+}
+.image-wrapper{
+    width: 100px;
+    height: 90px;
+    margin: 0 auto;
+    text-align: center;
+}
+.img-wrapper img,
+.image-wrapper img{
+    max-width: 100%;
+    max-height: 100%;
+}
+.products-list th{
+    text-align: center;
 }
 
 .prod-detail-img{
-    width: 300px;
+    width: 250px;
     height: 300px;
     text-align: center;
-    border: 1px solid red;
     float: left;
     margin-right: 20px;
 }
@@ -81,4 +110,54 @@ header nav li{
 }
 .prod-detail-info{
     float: left;
+    width: calc(100% - 270px);
+}
+
+#login{
+    width: 350px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.form-horizontal{
+    width: 450px;
+    padding: 25px;
+    margin: 0 auto;
+}
+.form-horizontal p{
+    clear: both;
+}
+.form-horizontal p label,
+.registration-form p label{
+    margin-top: 5px;
+}
+.form-horizontal p input[type="text"],
+.form-horizontal p input[type="number"],
+.form-horizontal p input[type="file"],
+.form-horizontal p textarea,
+.form-horizontal p select{
+    float: right;
+    width: 300px;
+}
+.form-horizontal p textarea{
+    height: 60px;
+}
+.form-horizontal button,
+.registration-form button{
+    width: 100%;
+}
+
+.registration-form{
+    width: 550px;
+    padding: 25px;
+    margin: 0 auto;
+}
+.registration-form p span{
+    display: block;
+    /*margin-top: 30px;*/
+}
+.registration-form p input[type="text"],
+.registration-form p input[type="password"]{
+    float: right;
+    width: 300px;
 }

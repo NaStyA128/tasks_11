@@ -2,14 +2,17 @@
 
 {% block content %}
 
+<div id="login">
+
     {% if form.errors %}
-    <p>Your username and password didn't match. Please try again.</p>
+    <p>Your username and password didn't match.</p>
+    <p>Please try again.</p>
     {% endif %}
 
     {% if next %}
         {% if user.is_authenticated %}
-        <p>Your account doesn't have access to this page. To proceed,
-        please login with an account that has access.</p>
+        <p>Your account doesn't have access to this page.</p>
+        <p>To proceed, please login with an account that has access.</p>
         {% else %}
         <p>Please login to see this page.</p>
         {% endif %}
@@ -20,5 +23,6 @@
         {{ form.as_p }}
         <input type="submit" value="Log in">
     </form>
+</div>
 
 {% endblock %}

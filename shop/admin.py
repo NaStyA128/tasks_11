@@ -9,56 +9,72 @@ from .models import (
     OrderProducts,
 )
 
-
-# admin.site.register(Categories)
-# admin.site.register(Products)
+admin.ModelAdmin.actions_on_bottom = True
 
 
-# @admin.register(Categories)
 class CategoriesAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['id', 'name']
+    # list_display_links = ['name']
+    list_editable = ['name']
+    list_per_page = 10
+    fields = ['name']
+    search_fields = ['name']
 
 
 class ProductsAdmin(admin.ModelAdmin):
-    list_display = ['name', 'category', 'price', 'image', ]
-    fields = ['name', 'price', 'category', 'image', ]
-    actions = []
-    actions_on_bottom = True
-    # empty_value_display = 'Empty'
+    list_display = ['id', 'name', 'category', 'price', 'image', ]
+    list_per_page = 10
+    list_display_links = ['id', 'name']
+    list_editable = ['category']
+    list_filter = ['category']
+    search_fields = ['name', 'price']
+    fieldsets = (
+        (
+            None,
+            {
+                'fields': (
+                    ('name', 'price'),
+                    'quantity',
+                    'category',
+                    'image')
+            }
+        ),
+        (
+            'Advanced options',
+            {
+                'classes': ('wide', ),
+                'fields': (
+                    ('size', 'colour'),
+                    'description',
+                ),
+                'description': 'Advanced fields',
+            }
+        )
+    )
+    show_full_result_count = False
+
+
+class OrderProductsInLine(admin.TabularInline):
+    model = OrderProducts
+    extra = 1
 
 
 class OrdersAdmin(admin.ModelAdmin):
-    list_display = ['id', 'total_sum', 'date', 'user', ]
-    # fields = ['products', ]
+    inlines = (OrderProductsInLine,)
+    list_display = ['id', 'user', 'total_sum', 'date', ]
+    list_display_links = ['date', ]
+    list_editable = ('user',)
+    list_filter = ('date',)
+    search_fields = ('total_sum',)
     date_hierarchy = 'date'
-    list_display_links = ('id', 'date')
-    list_editable = ('user', )
-    list_filter = ('date', )
-    search_fields = ('total_sum', )
-    actions = ['show_data', ]
-
-    def show_data(self, obj):
-        return 'hi'
-    show_data.short_description = 'update to today'
+    show_full_result_count = False
 
 
 class OrdersProductsAdmin(admin.ModelAdmin):
-    list_display = ['id', 'product', 'order', 'quantity', 'sum', ]
-    # fields = ['product', 'order', 'quantity', 'sum', ]
-    fieldsets = ((None,
-                 {
-                     'fields': (('product', 'order', ), 'quantity', 'sum')
-                 }
-                 ),
-                 (
-                     'Advanced options', {
-                         'classes': ('collapse', ),  # wide
-                         'fields': ('quantity', ),
-                         'description': '<b>This is description</b>',
-                     }
-                 ),)
-    # fieldsets =
-    # date_hierarchy = 'date'
+    list_display = ['id', 'order', 'product', 'quantity', 'sum', ]
+    list_display_links = ['id', 'order', ]
+    list_editable = ['product', 'quantity', 'sum']
+    show_full_result_count = False
 
 
 admin.site.register(Categories, CategoriesAdmin)

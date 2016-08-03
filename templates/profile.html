@@ -3,8 +3,13 @@
 {% block content %}
 
     {% if user.is_authenticated  %}
-        <p>Profile</p>
-        <p>{{ user.id }}</p>
+        <h3>My Profile</h3>
+        <p>Username: {{ user.username }}</p>
+        <p>Email: {{ user.email }}</p>
+        <p>First name: {{ user.first_name }}</p>
+        <p>Last name: {{ user.last_name }}</p>
+    {% else %}
+        <p>You must to sign up.</p>
     {% endif %}
 
 {% endblock %}

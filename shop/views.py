@@ -1,3 +1,4 @@
+from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import (
@@ -15,7 +16,7 @@ from django.contrib.auth.forms import (
 )
 from django.http import HttpResponse, HttpResponseRedirect
 # from django.shortcuts import get_object_or_404, get_list_or_404
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse
 
 from .models import(
     Categories,
@@ -33,13 +34,27 @@ class IndexList(ListView, FormView):
 
     def get_queryset(self):
         form = self.form_class(self.request.GET)
-        if form.is_valid():
-            return Products.objects.filter(
-                name__icontains=form.cleaned_data['name'])
+        form.is_valid()
+        if self.request.GET:
+            if self.request.GET['name'] and self.request.GET['ordering']:
+                q = Products.objects.filter(
+                    name__icontains=form.cleaned_data['name']).order_by(
+                    form.cleaned_data['ordering'])
+            elif self.request.GET['ordering']:
+                q = Products.objects.all().order_by(
+                    form.cleaned_data['ordering'])
+            else:
+                q = Products.objects.filter(
+                    name__icontains=form.cleaned_data['name'])
+            return q
         return Products.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super(IndexList, self).get_context_data(**kwargs)
+        if self.request.GET.get('name'):
+            context['search_name'] = self.request.GET.get('name')
+        if self.request.GET.get('ordering'):
+            context['search_ordering'] = self.request.GET.get('ordering')
         context['categories'] = Categories.objects.all()
         return context
 
@@ -71,41 +86,57 @@ class ProductDetail(DetailView):
         return context
 
 
-class AddProduct(CreateView, UpdateView):
+class AddProduct(CreateView):
     model = Products
     fields = ['name', 'description', 'category', 'image', 'size',
               'colour', 'price', 'quantity']
     template_name = 'add_product.html'
     success_url = '/'
 
-    def get(self, request, *args, **kwargs):
-        # ?rediret_uri=sdfsdfs
-        # self.success_url = '/%s/' % request.GET.get('redirect_uri')
-        # print(self.success_url)
-        self.object = None
-        response = super(AddProduct, self).get(request, *args, **kwargs)
-        return response
+    def get_context_data(self, **kwargs):
+        context = super(AddProduct, self).get_context_data(**kwargs)
+        context['categories'] = Categories.objects.all()
+        return context
+
+    def get_success_url(self):
+        return reverse('products-list', args={self.object.category_id})
+
+    # def get(self, request, *args, **kwargs):
+    #     # ?rediret_uri=sdfsdfs
+    #     # self.success_url = '/%s/' % request.GET.get('redirect_uri')
+    #     # print(self.success_url)
+    #     self.object = None
+    #     response = super(AddProduct, self).get(request, *args, **kwargs)
+    #     return response
 
 
-# class UpdateProduct(UpdateView):
-#     model = Products
-#     fields = ['name', 'description', 'category', 'image', 'size',
-#               'colour', 'price', 'quantity']
-#     template_name = 'add_product.html'
-#     success_url = '/'
+class UpdateProduct(UpdateView):
+    model = Products
+    fields = ['name', 'description', 'category', 'image', 'size',
+              'colour', 'price', 'quantity']
+    template_name = 'add_product.html'
+    success_url = '/'
+
+    def get_context_data(self, **kwargs):
+        context = super(UpdateProduct, self).get_context_data(**kwargs)
+        context['categories'] = Categories.objects.all()
+        return context
+
+    def get_success_url(self):
+        return reverse('products-list', args={self.object.category_id})
 
 
 class DeleteProduct(DeleteView):
     model = Products
-    success_url = '/'
+
+    def get_success_url(self):
+        return reverse('products-list', args={self.object.category_id})
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
 
 
-class UserProfile(DetailView):
-    model = User
-    context_object_name = 'user'
+class UserProfile(TemplateView):
     template_name = 'profile.html'
 
     def get_context_data(self, **kwargs):
