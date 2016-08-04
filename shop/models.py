@@ -1,10 +1,15 @@
 from django.db import models
-from django.contrib.auth import get_user_model
+# from django.contrib.auth import get_user_model
+# from django.contrib.auth.models import AbstractBaseUser
 from django.conf import settings
 from django.utils.encoding import python_2_unicode_compatible
 
 # Create your models here.
 # Users = get_user_model()
+
+
+# class Users(AbstractBaseUser):
+#     phone = models.CharField(max_length=13)
 
 
 class Categories(models.Model):
@@ -52,6 +57,11 @@ class OrderProducts(models.Model):
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     sum = models.FloatField()
+
+
+class Buyers(models.Model):
+    name = models.CharField(max_length=100)
+    phone = models.CharField(max_length=13)
 
 
 class Tree(models.Model):

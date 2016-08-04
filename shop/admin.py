@@ -7,9 +7,33 @@ from .models import (
     Products,
     Orders,
     OrderProducts,
+    Buyers
+    # Users,
 )
 
 admin.ModelAdmin.actions_on_bottom = True
+
+
+# class UsersAdmin(admin.ModelAdmin):
+#     list_display = ['id', 'phone', ]
+#     fields = ['username']
+
+
+# своя панелька справа
+class BlaListFilter(admin.SimpleListFilter):
+    title = 'My Filter'
+    parameter_name = 'bla'
+
+    def lookups(self, request, model_admin):
+        # return [('100-200', '100-200'), ('200-300', '200-300'), ]
+        qs = model_admin.get_queryset(request)
+        if qs.filter(price__gte=100, price__lte=200).exists():  # наличие в списке записей
+            yield ('100-200', '100-200')
+
+    def queryset(self, request, queryset):
+        if self.value == '100-200':
+            return queryset.filter(price__gte=100, price__lte=200)
+
 
 
 class CategoriesAdmin(admin.ModelAdmin):
@@ -69,6 +93,14 @@ class OrdersAdmin(admin.ModelAdmin):
     date_hierarchy = 'date'
     show_full_result_count = False
 
+    # mode
+
+    # class Media:
+    #     css = {
+    #         "all": ('my_style.css', )
+    #     }
+    #     js = ('my_code.js', )
+
 
 class OrdersProductsAdmin(admin.ModelAdmin):
     list_display = ['id', 'order', 'product', 'quantity', 'sum', ]
@@ -77,6 +109,11 @@ class OrdersProductsAdmin(admin.ModelAdmin):
     show_full_result_count = False
 
 
+class BuyersAdmin(admin.ModelAdmin):
+    list_display = ['id', 'name', 'phone']
+
+
+admin.site.register(Buyers, BuyersAdmin)
 admin.site.register(Categories, CategoriesAdmin)
 admin.site.register(Products, ProductsAdmin)
 admin.site.register(Orders, OrdersAdmin)

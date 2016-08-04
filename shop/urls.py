@@ -8,6 +8,7 @@ from .views import (
     AddProduct,
     UpdateProduct,
     DeleteProduct,
+    BuyersView
 )
 
 urlpatterns = [
@@ -17,4 +18,5 @@ urlpatterns = [
     url(r'^edit_product/(?P<pk>\d+)/$', UpdateProduct.as_view()),
     url(r'^add_product/$', AddProduct.as_view()),
     url(r'^delete_product/(?P<pk>\d+)/$', DeleteProduct.as_view()),
+    url(r'^buyer/(?P<pk>\d+)/$', BuyersView.as_view()),
 ]

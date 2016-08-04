@@ -21,8 +21,9 @@ from django.core.urlresolvers import reverse
 from .models import(
     Categories,
     Products,
+    Buyers
 )
-from .forms import SearchProduct
+from .forms import SearchProduct, BuyersForm2
 
 
 class IndexList(ListView, FormView):
@@ -180,3 +181,9 @@ class LogoutView(View):
     def get(self, request):
         logout(request)
         return HttpResponseRedirect('/')
+
+
+class BuyersView(FormView):
+    form_class = BuyersForm2
+    template_name = 'buyers.html'
+    success_url = '/'
