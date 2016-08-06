@@ -22,7 +22,13 @@
                     <div class="img-wrapper"><img src="{{ prod.image.url }}" alt=""></div>
                     <div class="caption">
                         <a href="{{ prod.category_id }}/{{ prod.id }}/">{{ prod.name }}</a>
-                        <p>price: {{ prod.price }}</p>
+                        <p>Price: {{ prod.price }}</p>
+                        {% if prod.quantity %}
+                            <p class="is_available">Есть в наличии</p>
+                            <a href="/cart/?product={{ prod.id }}" class="btn btn-default">Buy</a>
+                        {% else %}
+                            <p class="not_available">Нет в наличии</p>
+                        {% endif %}
                     </div>
                 </div>
             </div>

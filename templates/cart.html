@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load staticfiles%}
+
+{% block my_scripts %}
+    <script src="{% static 'shop/js/jquery-1.9.1.min.js' %}"></script>
+    <script src="{% static 'shop/js/scripts.js' %}"></script>
+{% endblock my_scripts %}
+
+{% block content %}
+
+    {% if request.session.cart %}
+        <h1>Cart</h1>
+        <table class="table table-striped cart-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Size</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for product in request.session.cart %}
+                <tr>
+                    <td><a href="/{{ product.category_id }}/{{ product.id }}/">{{ product.name }}</a></td>
+                    <td>{{ product.size }}</td>
+                    <td><input type="text" value="{{ product.quantity_in_cart }}" data-id="{{ product.id }}"></td>
+                    <td>{{ product.price }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <p>{{ request.session.total_cart }}</p>
+        <a href="" class="btn btn-default">Make an order</a>
+    {% else %}
+    <h1>Empty Cart</h1>
+    {% endif %}
+
+{% endblock content %}

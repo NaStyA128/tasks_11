@@ -161,3 +161,14 @@ header{
     float: right;
     width: 300px;
 }
+
+.is_available{
+    color: green;
+}
+.not_available{
+    color: red;
+}
+
+.cart-table input[type="text"]{
+    width: 50px;
+}

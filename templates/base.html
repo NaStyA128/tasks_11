@@ -10,6 +10,7 @@
     <link href="{% static 'shop/css/style.css' %}" rel="stylesheet" type="text/css">
 
     <script src="{% static 'shop/bootstrap-3.3.2/js/bootstrap.min.js' %}"></script>
+    {% block my_scripts %} {% endblock my_scripts %}
 </head>
 <body>
     <header class="container">
@@ -30,9 +31,11 @@
 
               <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated  %}
+                    <li><a href="/cart/">Cart</a></li>
                     <li><a href="/accounts/profile/">Profile</a></li>
                     <li><a href="/accounts/logout/">Logout</a></li>
                 {% else %}
+                    <li><a href="/cart/">Cart</a></li>
                     <li><a href="/accounts/login/">Authorization</a></li>
                     <li><a href="/accounts/">Registration</a></li>
                 {% endif %}
