@@ -23,7 +23,7 @@
                 <tr>
                     <td><a href="/{{ product.category_id }}/{{ product.id }}/">{{ product.name }}</a></td>
                     <td>{{ product.size }}</td>
-                    <td><input type="text" value="{{ product.quantity_in_cart }}" data-id="{{ product.id }}"></td>
+                    <td><input type="number" value="{{ product.quantity_in_cart }}" data-id="{{ product.id }}" min="1" max="100"></td>
                     <td>{{ product.price }}</td>
                 </tr>
             {% endfor %}

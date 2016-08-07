@@ -1,6 +1,7 @@
 from django.db import models
 # from django.contrib.auth import get_user_model
 # from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import User
 from django.conf import settings
 from django.utils.encoding import python_2_unicode_compatible
 
@@ -8,8 +9,9 @@ from django.utils.encoding import python_2_unicode_compatible
 # Users = get_user_model()
 
 
-# class Users(AbstractBaseUser):
-#     phone = models.CharField(max_length=13)
+class MyUsers(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    phone = models.CharField(max_length=13)
 
 
 class Categories(models.Model):
@@ -44,7 +46,8 @@ class Products(models.Model):
 
 class Orders(models.Model):
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        # settings.AUTH_USER_MODEL,
+        MyUsers,
         on_delete=models.CASCADE,
     )
     products = models.ManyToManyField(Products, through='OrderProducts')

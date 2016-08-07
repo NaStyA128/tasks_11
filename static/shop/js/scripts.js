@@ -32,7 +32,7 @@ $(document).ready(function(){
         return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
     }
 
-    $('.cart-table input[type="text"]').bind( "change, keyup" , function(e) {
+    $('.cart-table input[type="number"]').bind( "change keyup" , function(e) {
         var product_id = $(this).attr('data-id'),
             new_quantity = $(this).val();
         $.ajax({

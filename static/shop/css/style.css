@@ -169,6 +169,6 @@ header{
     color: red;
 }
 
-.cart-table input[type="text"]{
+.cart-table input[type="number"]{
     width: 50px;
 }
