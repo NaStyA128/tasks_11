@@ -197,14 +197,18 @@ class CartView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         my_lists = request.session.get('cart', False)
-        print('POST')
-        # ЗДЕСЬ ТОЖЕ СООТВЕТСТВЕННО ПЕРЕДЕЛАТЬ
         for product in my_lists:
             if int(request.POST.get('product_id', False)) == int(product.id):
-                print(product.price)
-                # product.price = 250.0
-                product.price *= int(request.POST.get('new_quantity', False))
-                print(product.price)
+                this_product = Products.objects.get(
+                    id=int(request.POST.get('product_id', False))
+                )
+                request.session['total_cart'] -= product.price
+                price = this_product.price * int(
+                    request.POST.get('new_quantity', False))
+                product.price = price
+                product.quantity_in_cart = int(request.POST.get(
+                    'new_quantity', False))
+                request.session['total_cart'] += product.price
         request.session['cart'] = my_lists
         return HttpResponseRedirect('/cart/')
 
@@ -212,19 +216,14 @@ class CartView(TemplateView):
         if not request.session.get('cart', False):
             request.session['cart'] = list()
             request.session['total_cart'] = 0
-        if request.method == 'POST':
-            print('hi')
-        else:
-            if request.GET.get('product', False):
-                my_lists = request.session.get('cart', False)
-                product = Products.objects.get(id=int(request.GET.get('product')))
-                product.quantity_in_cart = 1
-                # ПЕРЕДЕЛАТЬ!!!!!!!!!!!!!!!!!!!
-                # добавлять id товара и в template вытягивать по id
-                my_lists.append(product)
-                request.session['cart'] = my_lists
-                request.session['total_cart'] += (product.price * product.quantity_in_cart)
-                return HttpResponseRedirect('/cart/')
+        if request.GET.get('product', False):
+            my_lists = request.session.get('cart', False)
+            product = Products.objects.get(id=int(request.GET.get('product')))
+            product.quantity_in_cart = 1
+            my_lists.append(product)
+            request.session['cart'] = my_lists
+            request.session['total_cart'] += product.price
+            return HttpResponseRedirect('/cart/')
         return super(CartView, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
