@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load staticfiles%}
+
+{% block my_scripts %}
+    <script src="{% static 'shop/js/scripts.js' %}"></script>
+{% endblock my_scripts %}
+
+{% block content %}
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Size</th>
+                <th>Quantity</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in request.session.cart %}
+                <tr>
+                    <td><a href="/{{ product.category_id }}/{{ product.id }}/">{{ product.name }}</a></td>
+                    <td>{{ product.size }}</td>
+                    <td>{{ product.quantity_in_cart }}</td>
+                    <td>{{ product.price }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div>
+        {% if user.is_authenticated %}
+            <p>Username: {{ user.username }}</p>
+            <p>Email: {{ user.email }}</p>
+            <p>First name: {{ user.first_name }}</p>
+            <p>Last name: {{ user.last_name }}</p>
+            <p>Phone: {{ user_all_info.phone }}</p>
+            <a href="">Yes!</a>
+        {% else %}
+            <a href="/accounts/">Sign up</a>
+        {% endif %}
+    </div>
+
+{% endblock content %}

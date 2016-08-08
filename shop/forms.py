@@ -1,7 +1,8 @@
 from django import forms
 from django.forms import MultiWidget
+from django.contrib.auth.forms import UserCreationForm
 
-from .models import Products, Buyers
+from .models import Products, Buyers,  MyUsers
 
 CHOICES = (('name', 'name'), ('price', 'price'))
 
@@ -50,6 +51,18 @@ class PhoneField(forms.MultiValueField):
 #     class Meta:
 #         model = Buyers
 #         fields = ['name', 'phone']
+
+
+class RegistrationForm(UserCreationForm):
+    phone = PhoneField(3, 7)
+
+    def save(self, commit=True):
+        user = super(UserCreationForm, self).save(commit=False)
+        user.set_password(self.cleaned_data["password1"])
+        if commit:
+            user.save()
+            MyUsers.objects.create(user=user, phone=self.cleaned_data["phone"])
+        return user
 
 
 class BuyersForm2(forms.Form):

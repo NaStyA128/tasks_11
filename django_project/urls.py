@@ -23,11 +23,13 @@ from shop.views import (
     LoginUser,
     LogoutView,
     CartView,
+    MakeOrderView,
 )
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^cart/order/', MakeOrderView.as_view(), name='make_order'),
     url(r'^cart/', CartView.as_view(), name='cart'),
     url(r'^accounts/login/', LoginUser.as_view()),
     url(r'^accounts/logout/', LogoutView.as_view()),

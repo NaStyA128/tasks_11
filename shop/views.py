@@ -24,9 +24,9 @@ from django.contrib.sessions.models import Session
 from .models import(
     Categories,
     Products,
-    Buyers
+    MyUsers
 )
-from .forms import SearchProduct, BuyersForm2
+from .forms import SearchProduct, BuyersForm2, RegistrationForm
 
 
 class IndexList(ListView, FormView):
@@ -143,16 +143,29 @@ class DeleteProduct(DeleteView):
 class UserProfile(TemplateView):
     template_name = 'profile.html'
 
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated():
+            self.user_id = request.user.id
+        else:
+            self.user_id = None
+        return super(UserProfile, self).get(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super(UserProfile, self).get_context_data(**kwargs)
         context['categories'] = Categories.objects.all()
+        if self.user_id:
+            context['user_all_info'] = MyUsers.objects.get(user_id=self.user_id)
         return context
 
 
 class RegistrationUser(FormView):
-    form_class = UserCreationForm
+    form_class = RegistrationForm
     template_name = 'add_user.html'
     success_url = 'login/'
+
+    # def save(self, commit=True):
+    #     user = super(UserCreationForm, self).save(commit=False)
+    #     return super(RegistrationUser, self).save(commit)
 
     def form_valid(self, form):
         form.save()
@@ -224,9 +237,35 @@ class CartView(TemplateView):
             request.session['cart'] = my_lists
             request.session['total_cart'] += product.price
             return HttpResponseRedirect('/cart/')
+        if request.GET.get('delete', False):
+            my_lists = request.session.get('cart', False)
+            for prod in my_lists:
+                if prod.id == int(request.GET.get('delete', False)):
+                    request.session['total_cart'] -= prod.price
+                    my_lists.remove(prod)
+                    request.session['cart'] = my_lists
+            return HttpResponseRedirect('/cart/')
         return super(CartView, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(CartView, self).get_context_data(**kwargs)
+        context['categories'] = Categories.objects.all()
         return context
 
+
+class MakeOrderView(TemplateView):
+    template_name = "make_order.html"
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated():
+            self.user_id = request.user.id
+        else:
+            self.user_id = None
+        return super(MakeOrderView, self).get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(MakeOrderView, self).get_context_data(**kwargs)
+        context['categories'] = Categories.objects.all()
+        if self.user_id:
+            context['user_all_info'] = MyUsers.objects.get(user_id=self.user_id)
+        return context
