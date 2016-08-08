@@ -24,7 +24,9 @@ from django.contrib.sessions.models import Session
 from .models import(
     Categories,
     Products,
-    MyUsers
+    MyUsers,
+    Orders,
+    OrderProducts
 )
 from .forms import SearchProduct, BuyersForm2, RegistrationForm
 
@@ -145,7 +147,8 @@ class UserProfile(TemplateView):
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated():
-            self.user_id = request.user.id
+            u = MyUsers.objects.get(user_id=request.user.id)
+            self.user_id = u.id
         else:
             self.user_id = None
         return super(UserProfile, self).get(request, *args, **kwargs)
@@ -154,8 +157,16 @@ class UserProfile(TemplateView):
         context = super(UserProfile, self).get_context_data(**kwargs)
         context['categories'] = Categories.objects.all()
         if self.user_id:
-            context['user_all_info'] = MyUsers.objects.get(user_id=self.user_id)
-        return context
+            context['user_all_info'] = MyUsers.objects.get(id=self.user_id)
+            list_orders = Orders.objects.filter(user_id=self.user_id).all()
+            list_products_in_orders = []
+            for order in list_orders:
+                list_products_in_orders.append(
+                    OrderProducts.objects.filter(order_id=order.id).all()
+                )
+            context['orders'] = list_orders
+            context['products_orders'] = list_products_in_orders
+            return context
 
 
 class RegistrationUser(FormView):
@@ -219,8 +230,9 @@ class CartView(TemplateView):
                 price = this_product.price * int(
                     request.POST.get('new_quantity', False))
                 product.price = price
-                product.quantity_in_cart = int(request.POST.get(
-                    'new_quantity', False))
+                if product.quantity_in_cart < product.quantity:
+                    product.quantity_in_cart = int(request.POST.get(
+                        'new_quantity', False))
                 request.session['total_cart'] += product.price
         request.session['cart'] = my_lists
         return HttpResponseRedirect('/cart/')
@@ -231,7 +243,9 @@ class CartView(TemplateView):
             request.session['total_cart'] = 0
         if request.GET.get('product', False):
             my_lists = request.session.get('cart', False)
-            product = Products.objects.get(id=int(request.GET.get('product')))
+            product = Products.objects.get(
+                id=int(request.GET.get('product', False))
+            )
             product.quantity_in_cart = 1
             my_lists.append(product)
             request.session['cart'] = my_lists
@@ -258,7 +272,8 @@ class MakeOrderView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated():
-            self.user_id = request.user.id
+            u = MyUsers.objects.get(user_id=request.user.id)
+            self.user_id = u.id
         else:
             self.user_id = None
         return super(MakeOrderView, self).get(request, *args, **kwargs)
@@ -267,5 +282,30 @@ class MakeOrderView(TemplateView):
         context = super(MakeOrderView, self).get_context_data(**kwargs)
         context['categories'] = Categories.objects.all()
         if self.user_id:
-            context['user_all_info'] = MyUsers.objects.get(user_id=self.user_id)
+            context['user_all_info'] = MyUsers.objects.get(id=self.user_id)
         return context
+
+
+class CreateOrderView(View):
+
+    def get(self, request):
+        if request.user.is_authenticated():
+            if request.session.get('cart', False):
+                u = MyUsers.objects.get(user_id=request.user.id)
+                order = Orders.objects.create(
+                    user_id=u.id,
+                    total_sum=request.session.get('total_cart', False)
+                )
+                list_product = request.session.get('cart', False)
+                for product in list_product:
+                    OrderProducts.objects.create(
+                        quantity=product.quantity_in_cart,
+                        sum=product.price,
+                        order_id=order.id,
+                        product_id=product.id
+                    )
+                    prod = Products.objects.get(id=product.id)
+                    new_quantity = prod.quantity - product.quantity_in_cart
+                    Products.objects.filter(id=product.id).update(quantity=new_quantity)
+                request.session.pop('cart')
+        return HttpResponseRedirect('/accounts/profile/')

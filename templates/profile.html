@@ -9,6 +9,36 @@
         <p>First name: {{ user.first_name }}</p>
         <p>Last name: {{ user.last_name }}</p>
         <p>Phone: {{ user_all_info.phone }}</p>
+        <h4>Orders</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Sum</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr class="header-table">
+                    <td colspan="4"><h5>Order #{{ order.id }} - {{ order.date }} - {{ order.total_sum }}</h5></td>
+                </tr>
+                    {% for products in products_orders %}
+                        {% for product in products %}
+                            {% if product.order_id == order.id %}
+                            <tr>
+                                <td>{{ product.product.name }}</td>
+                                <td>{{ product.product.price }}</td>
+                                <td>{{ product.quantity }}</td>
+                                <td>{{ product.sum }}</td>
+                            </tr>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
     {% else %}
         <p>You must to sign up.</p>
     {% endif %}

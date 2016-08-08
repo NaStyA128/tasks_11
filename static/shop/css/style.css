@@ -172,3 +172,7 @@ header{
 .cart-table input[type="number"]{
     width: 50px;
 }
+
+.header-table{
+    text-align: center;
+}

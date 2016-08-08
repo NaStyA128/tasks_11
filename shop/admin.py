@@ -7,33 +7,43 @@ from .models import (
     Products,
     Orders,
     OrderProducts,
-    Buyers
-    # Users,
+    MyUsers
 )
 
 admin.ModelAdmin.actions_on_bottom = True
 
 
-# class UsersAdmin(admin.ModelAdmin):
-#     list_display = ['id', 'phone', ]
-#     fields = ['username']
+class MyUsersAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'phone', ]
+    search_fields = ['phone']
 
 
 # своя панелька справа
-class BlaListFilter(admin.SimpleListFilter):
-    title = 'My Filter'
-    parameter_name = 'bla'
+class TotalSumListFilter(admin.SimpleListFilter):
+    title = 'Total Sum'
+    parameter_name = 'by total_sum'
 
     def lookups(self, request, model_admin):
         # return [('100-200', '100-200'), ('200-300', '200-300'), ]
         qs = model_admin.get_queryset(request)
-        if qs.filter(price__gte=100, price__lte=200).exists():  # наличие в списке записей
-            yield ('100-200', '100-200')
+        if qs.filter(total_sum__lte=200).exists():  # наличие в списке записей
+            yield ('-200', '-200')
+        if qs.filter(total_sum__gte=201, total_sum__lte=300).exists():
+            yield ('201-300', '201-300')
+        if qs.filter(total_sum__gte=301, total_sum__lte=500).exists():
+            yield ('301-500', '301-500')
+        if qs.filter(total_sum__gte=501).exists():
+            yield ('501-', '501-')
 
     def queryset(self, request, queryset):
-        if self.value == '100-200':
-            return queryset.filter(price__gte=100, price__lte=200)
-
+        if self.value() == '-200':
+            return queryset.filter(total_sum__lte=200)
+        elif self.value() == '201-300':
+            return queryset.filter(total_sum__gte=201, total_sum__lte=300)
+        elif self.value() == '301-500':
+            return queryset.filter(total_sum__gte=301, total_sum__lte=500)
+        elif self.value() == '501-':
+            return queryset.filter(total_sum__gte=501)
 
 
 class CategoriesAdmin(admin.ModelAdmin):
@@ -88,7 +98,7 @@ class OrdersAdmin(admin.ModelAdmin):
     list_display = ['id', 'user', 'total_sum', 'date', ]
     list_display_links = ['date', ]
     list_editable = ('user',)
-    list_filter = ('date',)
+    list_filter = ('date', TotalSumListFilter, )
     search_fields = ('total_sum',)
     date_hierarchy = 'date'
     show_full_result_count = False
@@ -109,11 +119,11 @@ class OrdersProductsAdmin(admin.ModelAdmin):
     show_full_result_count = False
 
 
-class BuyersAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'phone']
+# class BuyersAdmin(admin.ModelAdmin):
+#     list_display = ['id', 'name', 'phone']
 
 
-admin.site.register(Buyers, BuyersAdmin)
+admin.site.register(MyUsers, MyUsersAdmin)
 admin.site.register(Categories, CategoriesAdmin)
 admin.site.register(Products, ProductsAdmin)
 admin.site.register(Orders, OrdersAdmin)

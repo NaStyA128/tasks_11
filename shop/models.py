@@ -13,6 +13,10 @@ class MyUsers(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone = models.CharField(max_length=13)
 
+    @python_2_unicode_compatible
+    def __str__(self):
+        return self.user.username
+
 
 class Categories(models.Model):
     name = models.CharField(max_length=50)

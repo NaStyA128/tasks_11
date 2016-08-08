@@ -13,6 +13,9 @@
             <p>Size: {{ product.size }}</p>
             <p>Colour: {{ product.colour }}</p>
             <p>Price: {{ product.price }}</p>
+            {% if product.quantity %}
+            <a href="/cart/?product={{ product.id }}" class="btn btn-default">Buy</a>
+            {% endif %}
         </div>
     </div>
 
