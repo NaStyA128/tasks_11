@@ -243,6 +243,10 @@ class CartView(TemplateView):
             request.session['total_cart'] = 0
         if request.GET.get('product', False):
             my_lists = request.session.get('cart', False)
+            # if my_lists:
+            #     for product_in_cart in my_lists:
+            #         if product_in_cart.id == int(request.GET.get('product', False)):
+            #             product_in_cart.quantity_in_cart += 1
             product = Products.objects.get(
                 id=int(request.GET.get('product', False))
             )

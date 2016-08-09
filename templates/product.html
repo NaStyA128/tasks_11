@@ -9,7 +9,7 @@
             <h3 class="panel-title">{{ product.name }}</h3>
         </div>
         <div class="panel-body">
-            <p>Description: {{ product.description }}</p>
+            <p>Description: {{ product.description|safe }}</p>
             <p>Size: {{ product.size }}</p>
             <p>Colour: {{ product.colour }}</p>
             <p>Price: {{ product.price }}</p>

@@ -96,7 +96,7 @@ class OrderProductsInLine(admin.TabularInline):
 class OrdersAdmin(admin.ModelAdmin):
     inlines = (OrderProductsInLine,)
     list_display = ['id', 'user', 'total_sum', 'date', ]
-    list_display_links = ['date', ]
+    list_display_links = ['id', 'date', ]
     list_editable = ('user',)
     list_filter = ('date', TotalSumListFilter, )
     search_fields = ('total_sum',)
