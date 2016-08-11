@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+# переводит по месту
+from django.utils.translation import ugettext as _
+# оборачивает строку в обертку и не вызывается, пока нам не понадобится ее отобразить
+# from django.utils.translation import ugettext_lazy as _
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -106,7 +110,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
+
+LOCAL_PATH = [os.path.join(BASE_DIR, 'locale')]
 
 TIME_ZONE = 'UTC'
 
@@ -133,3 +139,31 @@ MEDIA_URL = '/media/'
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.db': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}
+
+LANGUAGES = (
+    ('ru', 'Russion'),
+    ('en', 'English'),
+)
+
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+#         'LOCATION': '127.0.0.1:11211',
+#     }
+# }

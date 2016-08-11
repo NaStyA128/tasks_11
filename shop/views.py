@@ -29,6 +29,11 @@ from .models import(
     OrderProducts
 )
 from .forms import SearchProduct, BuyersForm2, RegistrationForm
+from django.utils.translation import ugettext as _
+
+
+def my_main(request):
+    return HttpResponse(_('Hi'))
 
 
 class IndexList(ListView, FormView):
