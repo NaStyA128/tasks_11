@@ -1,22 +1,23 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block content %}
 
     {% if user.is_authenticated  %}
-        <h3>My Profile</h3>
-        <p>Username: {{ user.username }}</p>
-        <p>Email: {{ user.email }}</p>
-        <p>First name: {{ user.first_name }}</p>
-        <p>Last name: {{ user.last_name }}</p>
-        <p>Phone: {{ user_all_info.phone }}</p>
-        <h4>Orders</h4>
+        <h3>{% trans "My Profile" %}</h3>
+        <p>{% trans "Username" %}: {{ user.username }}</p>
+        <p>{% trans "Email" %}: {{ user.email }}</p>
+        <p>{% trans "First name" %}: {{ user.first_name }}</p>
+        <p>{% trans "Last name" %}: {{ user.last_name }}</p>
+        <p>{% trans "Phone" %}: {{ user_all_info.phone }}</p>
+        <h4>{% trans "Orders" %}</h4>
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Name product</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Sum</th>
+                    <th>{% trans "Name product" %}</th>
+                    <th>{% trans "Price" %}</th>
+                    <th>{% trans "Quantity" %}</th>
+                    <th>{% trans "Sum" %}</th>
                 </tr>
             </thead>
             <tbody>
@@ -40,7 +41,7 @@
             </tbody>
         </table>
     {% else %}
-        <p>You must to sign up.</p>
+        <p>{% trans "You must to sign up." %}</p>
     {% endif %}
 
 {% endblock %}

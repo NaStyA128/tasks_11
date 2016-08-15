@@ -1,5 +1,3 @@
-import json
-
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -10,7 +8,6 @@ from django.views.generic.edit import (
     DeleteView,
 )
 from django.views.generic.base import View
-from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import (
     UserCreationForm,
@@ -19,7 +16,6 @@ from django.contrib.auth.forms import (
 from django.http import HttpResponse, HttpResponseRedirect
 # from django.shortcuts import get_object_or_404, get_list_or_404
 from django.core.urlresolvers import reverse
-from django.contrib.sessions.models import Session
 
 from .models import(
     Categories,
@@ -28,7 +24,7 @@ from .models import(
     Orders,
     OrderProducts
 )
-from .forms import SearchProduct, BuyersForm2, RegistrationForm
+from .forms import SearchProduct, RegistrationForm
 from django.utils.translation import ugettext as _
 
 
@@ -179,10 +175,6 @@ class RegistrationUser(FormView):
     template_name = 'add_user.html'
     success_url = 'login/'
 
-    # def save(self, commit=True):
-    #     user = super(UserCreationForm, self).save(commit=False)
-    #     return super(RegistrationUser, self).save(commit)
-
     def form_valid(self, form):
         form.save()
         return super(RegistrationUser, self).form_valid(form)
@@ -215,10 +207,10 @@ class LogoutView(View):
         return HttpResponseRedirect('/')
 
 
-class BuyersView(FormView):
-    form_class = BuyersForm2
-    template_name = 'buyers.html'
-    success_url = '/'
+# class BuyersView(FormView):
+#     form_class = BuyersForm2
+#     template_name = 'buyers.html'
+#     success_url = '/'
 
 
 class CartView(TemplateView):

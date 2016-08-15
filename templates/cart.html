@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load staticfiles%}
+{% load i18n %}
 
 {% block my_scripts %}
     <script src="{% static 'shop/js/scripts.js' %}"></script>
@@ -8,15 +9,15 @@
 {% block content %}
 
     {% if request.session.cart %}
-        <h1>Cart</h1>
+        <h1>{% trans "Cart" %}</h1>
         <table class="table table-striped cart-table">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Size</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <th>Options</th>
+                    <th>{% trans "Name" %}</th>
+                    <th>{% trans "Size" %}</th>
+                    <th>{% trans "Quantity" %}</th>
+                    <th>{% trans "Price" %}</th>
+                    <th>{% trans "Options" %}</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,15 +27,15 @@
                     <td>{{ product.size }}</td>
                     <td><input type="number" value="{{ product.quantity_in_cart }}" data-id="{{ product.id }}" min="1" max="100"></td>
                     <td>{{ product.price }}</td>
-                    <td><a href="/cart/?delete={{ product.id }}">delete</a></td>
+                    <td><a href="/cart/?delete={{ product.id }}">{% trans "Delete" %}</a></td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
         <p>{{ request.session.total_cart }}</p>
-        <a href="/cart/order/" class="btn btn-default">Make an order</a>
+        <a href="/cart/order/" class="btn btn-default">{% trans "Make an order" %}</a>
     {% else %}
-    <h1>Empty Cart</h1>
+    <h1>{% trans "Empty Cart" %}</h1>
     {% endif %}
 
 {% endblock content %}

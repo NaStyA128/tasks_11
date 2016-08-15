@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 # переводит по месту
-from django.utils.translation import ugettext as _
+# from django.utils.translation import ugettext as _
 # оборачивает строку в обертку и не вызывается, пока нам не понадобится ее отобразить
 # from django.utils.translation import ugettext_lazy as _
 
@@ -53,6 +53,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'django.middleware.locale.LocaleMiddleware',
 ]
 
 ROOT_URLCONF = 'django_project.urls'
@@ -112,9 +113,14 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ru'
 
-LOCAL_PATH = [os.path.join(BASE_DIR, 'locale')]
+LOCAL_PATHS = [os.path.join(BASE_DIR, 'locale'), ]
 
-TIME_ZONE = 'UTC'
+LANGUAGES = (
+    ('ru', 'Russion'),
+    ('en', 'English'),
+)
+
+TIME_ZONE = 'Europe/Kiev'
 
 USE_I18N = True
 
@@ -138,7 +144,7 @@ MEDIA_URL = '/media/'
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 LOGGING = {
     'version': 1,
@@ -155,11 +161,6 @@ LOGGING = {
         },
     },
 }
-
-LANGUAGES = (
-    ('ru', 'Russion'),
-    ('en', 'English'),
-)
 
 # CACHES = {
 #     'default': {

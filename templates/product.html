@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block content %}
     <div class="prod-detail-img">
@@ -9,12 +10,12 @@
             <h3 class="panel-title">{{ product.name }}</h3>
         </div>
         <div class="panel-body">
-            <p>Description: {{ product.description|safe }}</p>
-            <p>Size: {{ product.size }}</p>
-            <p>Colour: {{ product.colour }}</p>
-            <p>Price: {{ product.price }}</p>
+            <p>{% trans "Description" %}: {{ product.description|safe }}</p>
+            <p>{% trans "Size" %}: {{ product.size }}</p>
+            <p>{% trans "Colour" %}: {{ product.colour }}</p>
+            <p>{% trans "Price" %}: {{ product.price }}</p>
             {% if product.quantity %}
-            <a href="/cart/?product={{ product.id }}" class="btn btn-default">Buy</a>
+            <a href="/cart/?product={{ product.id }}" class="btn btn-default">{% trans "Buy" %}</a>
             {% endif %}
         </div>
     </div>

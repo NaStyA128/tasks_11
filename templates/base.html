@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 {% load staticfiles %}
 {% load cache %}
+{% load i18n %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Shop</title>
+    <title>{% trans "Shop" %}</title>
 
     <link href="{% static 'shop/bootstrap-3.3.2/css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'shop/bootstrap-3.3.2/css/bootstrap-theme.min.css' %}" rel="stylesheet">
@@ -20,7 +21,7 @@
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="/">Home</a>
+                    <a class="navbar-brand" href="/">{% trans "Home" %}</a>
                 </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -33,13 +34,13 @@
 
               <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated  %}
-                    <li><a href="/cart/">Cart</a></li>
-                    <li><a href="/accounts/profile/">Profile</a></li>
-                    <li><a href="/accounts/logout/">Logout</a></li>
+                    <li><a href="/cart/">{% trans "Cart" %}</a></li>
+                    <li><a href="/accounts/profile/">{% trans "Profile" %}</a></li>
+                    <li><a href="/accounts/logout/">{% trans "Logout" %}</a></li>
                 {% else %}
-                    <li><a href="/cart/">Cart</a></li>
-                    <li><a href="/accounts/login/">Authorization</a></li>
-                    <li><a href="/accounts/">Registration</a></li>
+                    <li><a href="/cart/">{% trans "Cart" %}</a></li>
+                    <li><a href="/accounts/login/">{% trans "Authorization" %}</a></li>
+                    <li><a href="/accounts/">{% trans "Registration" %}</a></li>
                 {% endif %}
               </ul>
             </div><!-- /.navbar-collapse -->

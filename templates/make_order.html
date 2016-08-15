@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load staticfiles%}
+{% load i18n %}
 
 {% block my_scripts %}
     <script src="{% static 'shop/js/scripts.js' %}"></script>
@@ -10,10 +11,10 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Size</th>
-                <th>Quantity</th>
-                <th>Price</th>
+                <th>{% trans "Name" %}</th>
+                <th>{% trans "Size" %}</th>
+                <th>{% trans "Quantity" %}</th>
+                <th>{% trans "Price" %}</th>
             </tr>
         </thead>
         <tbody>
@@ -29,14 +30,14 @@
     </table>
     <div>
         {% if user.is_authenticated %}
-            <p>Username: {{ user.username }}</p>
-            <p>Email: {{ user.email }}</p>
-            <p>First name: {{ user.first_name }}</p>
-            <p>Last name: {{ user.last_name }}</p>
-            <p>Phone: {{ user_all_info.phone }}</p>
-            <a href="/cart/create_order/" class="btn btn-default">Done</a>
+            <p>{% trans "Username" %}: {{ user.username }}</p>
+            <p>{% trans "Email" %}: {{ user.email }}</p>
+            <p>{% trans "First name" %}: {{ user.first_name }}</p>
+            <p>{% trans "Last name" %}: {{ user.last_name }}</p>
+            <p>{% trans "Phone" %}: {{ user_all_info.phone }}</p>
+            <a href="/cart/create_order/" class="btn btn-default">{% trans "Done" %}</a>
         {% else %}
-            <a href="/accounts/" class="btn btn-default">Sign up</a>
+            <a href="/accounts/" class="btn btn-default">{% trans "Sign up" %}</a>
         {% endif %}
     </div>
 

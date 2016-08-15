@@ -1,17 +1,19 @@
 from django import forms
 from django.forms import MultiWidget
 from django.contrib.auth.forms import UserCreationForm
+from django.utils.translation import ugettext as _
 
-from .models import Products, Buyers,  MyUsers
+from .models import Products, MyUsers
 
 CHOICES = (('name', 'name'), ('price', 'price'))
 
 
 class SearchProduct(forms.ModelForm):
-    ordering = forms.ChoiceField(choices=CHOICES, required=False)
+    ordering = forms.ChoiceField(choices=CHOICES, required=False, label=_("Ordering"))
     name = forms.CharField(
         max_length=100,
-        required=False
+        required=False,
+        label=_("Name")
     )
 
     class Meta:
@@ -47,14 +49,8 @@ class PhoneField(forms.MultiValueField):
         return "+38"+values[0]+values[1]
 
 
-# class BuyersForm(forms.ModelForm):
-#     class Meta:
-#         model = Buyers
-#         fields = ['name', 'phone']
-
-
 class RegistrationForm(UserCreationForm):
-    phone = PhoneField(3, 7)
+    phone = PhoneField(3, 7, label=_("Phone"))
 
     def save(self, commit=True):
         user = super(UserCreationForm, self).save(commit=False)
@@ -65,9 +61,9 @@ class RegistrationForm(UserCreationForm):
         return user
 
 
-class BuyersForm2(forms.Form):
-    name = forms.CharField(max_length=100)
-    phone = PhoneField(3, 7)
+# class BuyersForm2(forms.Form):
+#     name = forms.CharField(max_length=100)
+#     phone = PhoneField(3, 7, label=_("Phone"))
 
     # class Meta:
     #     model = Buyers
