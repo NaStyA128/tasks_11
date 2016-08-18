@@ -29,6 +29,7 @@ from shop.views import (
 
 
 urlpatterns = [
+    url(r'^api/', include("api.urls")),
     url(r'^admin/', admin.site.urls),
     url(r'^cart/create_order/', CreateOrderView.as_view(), name='create_order'),
     url(r'^cart/order/', MakeOrderView.as_view(), name='make_order'),
